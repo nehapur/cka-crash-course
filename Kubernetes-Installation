@@ -1,0 +1,771 @@
+1.	Install kubectl binary with curl on Linux
+•	Download the latest release with the command:
+•	  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+2.	Validate the binary (optional)
+Download the kubectl checksum file:
+curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
+Validate the kubectl binary against the checksum file:
+echo "$(<kubectl.sha256)  kubectl" | sha256sum --check
+If valid, the output is:
+kubectl: OK
+If the check fails, sha256 exits with nonzero status and prints output similar to:
+kubectl: FAILED
+sha256sum: WARNING: 1 computed checksum did NOT match
+Note: Download the same version of the binary and checksum.
+3.	Install kubectl
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+
+4.	Test to ensure the version you installed is up-to-date:
+5.	kubectl version --client
+Or use this for detailed view of version:
+ 	kubectl version --client --output=yaml
+    
+
+Podman installation to create cluster & to start with kubectl cluster-nfo command which is executed using minikube running podman driver(we can also use others drivers like docker,virtualbox,vm..)
+
+
+
+Get:26 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 Packages [1600 kB]
+Get:27 http://archive.ubuntu.com/ubuntu focal-updates/main Translation-en [306 kB]
+Get:28 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 c-n-f Metadata [14.8 kB]
+Get:29 http://archive.ubuntu.com/ubuntu focal-updates/restricted amd64 Packages [818 kB]
+Get:30 http://archive.ubuntu.com/ubuntu focal-updates/restricted Translation-en [116 kB]
+Get:31 http://archive.ubuntu.com/ubuntu focal-updates/restricted amd64 c-n-f Metadata [500 B]
+Get:32 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 Packages [905 kB]
+Get:33 http://archive.ubuntu.com/ubuntu focal-updates/universe Translation-en [201 kB]
+Get:34 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 c-n-f Metadata [20.1 kB]
+Get:35 http://archive.ubuntu.com/ubuntu focal-updates/multiverse amd64 Packages [23.7 kB]
+Get:36 http://archive.ubuntu.com/ubuntu focal-updates/multiverse Translation-en [7312 B]
+Get:37 http://archive.ubuntu.com/ubuntu focal-updates/multiverse amd64 c-n-f Metadata [580 B]
+Get:38 http://archive.ubuntu.com/ubuntu focal-backports/main amd64 Packages [42.0 kB]
+Get:39 http://archive.ubuntu.com/ubuntu focal-backports/main Translation-en [10.0 kB]
+Get:40 http://archive.ubuntu.com/ubuntu focal-backports/main amd64 c-n-f Metadata [864 B]
+Get:41 http://archive.ubuntu.com/ubuntu focal-backports/restricted amd64 c-n-f Metadata [116 B]
+Get:42 http://archive.ubuntu.com/ubuntu focal-backports/universe amd64 Packages [22.0 kB]
+Get:43 http://archive.ubuntu.com/ubuntu focal-backports/universe Translation-en [15.2 kB]
+Get:44 http://archive.ubuntu.com/ubuntu focal-backports/universe amd64 c-n-f Metadata [728 B]
+Get:45 http://archive.ubuntu.com/ubuntu focal-backports/multiverse amd64 c-n-f Metadata [116 B]
+Fetched 23.7 MB in 9s (2739 kB/s)
+Reading package lists... Done
+ubuntu@LAPTOP-GDQ3M2RK:~$ echo "deb https://download.opensuse
+> "
+deb https://download.opensuse
+
+ubuntu@LAPTOP-GDQ3M2RK:~$ curl -L "https://download.opensuse
+> "
+curl: (3) URL using bad/illegal format or missing URL
+ubuntu@LAPTOP-GDQ3M2RK:~$ echo "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/testing/xUbuntu_${VERSION_ID}/ /" | sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:testing.list
+deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/testing/xUbuntu_/ /
+ubuntu@LAPTOP-GDQ3M2RK:~$ sudo apt-get install -y ca-certificates
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+The following packages will be upgraded:
+  ca-certificates
+1 upgraded, 0 newly installed, 0 to remove and 255 not upgraded.
+Need to get 145 kB of archives.
+After this operation, 4096 B disk space will be freed.
+Get:1 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 ca-certificates all 20210119~20.04.2 [145 kB]
+Fetched 145 kB in 2s (75.6 kB/s)
+Preconfiguring packages ...
+(Reading database ... 31836 files and directories currently installed.)
+Preparing to unpack .../ca-certificates_20210119~20.04.2_all.deb ...
+Unpacking ca-certificates (20210119~20.04.2) over (20190110ubuntu1) ...
+Setting up ca-certificates (20210119~20.04.2) ...
+Updating certificates in /etc/ssl/certs...
+21 added, 21 removed; done.
+Processing triggers for man-db (2.9.1-1) ...
+Processing triggers for ca-certificates (20210119~20.04.2) ...
+Updating certificates in /etc/ssl/certs...
+0 added, 0 removed; done.
+Running hooks in /etc/ca-certificates/update.d...
+done.
+ubuntu@LAPTOP-GDQ3M2RK:~$ curl -L "http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/testing/xUbuntu_20.04/Release.key"
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+Version: GnuPG v1.4.5 (GNU/Linux)
+
+mQENBFtkV0cBCADStSTCG5qgYtzmWfymHZqxxhfwfS6fdHJcbGUeXsI5dxjeCWhs
+XarZm6rWZOd5WfSmpXhbKOyM6Ll+6bpSl5ICHLa6fcpizYWEPa8fpg9EGl0cF12G
+GgVLnnOZ6NIbsoW0LHt2YN0jn8xKVwyPp7KLHB2paZh+KuURERG406GXY/DgCxUx
+Ffgdelym/gfmt3DSq6GAQRRGHyucMvPYm53r+jVcKsf2Bp6E1XAfqBrD5r0maaCU
+Wvd7bi0B2Q0hIX0rfDCBpl4rFqvyaMPgn+Bkl6IW37zCkWIXqf1E5eDm/XzP881s
++yAvi+JfDwt7AE+Hd2dSf273o3WUdYJGRwyZABEBAAG0OGRldmVsOmt1YmljIE9C
+UyBQcm9qZWN0IDxkZXZlbDprdWJpY0BidWlsZC5vcGVuc3VzZS5vcmc+iQE+BBMB
+CAAoBQJfcJJOAhsDBQkIKusHBgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRBN
+ZDkDdQYKpB0xCACmtCT6ruPiQa4l0DEptZ+u3NNbZfSVGH4fE4hyTjLbzrCxqcoh
+xJvDKxspuJ85wWFWMtl57+lFFE1KP0AX2XTT+/v2vN1PIfwgOSw3yp2sgWuIXFAi
+89YSjSh8G0SGAH90A9YFMnTbllzGoGURjSX03iasW3A408ljbDehA6rpS3t3FD7P
+PnUF6204orYu00Qvc54an/xVJzxupb69MKW5EeK7x8MJnIToT8hIdOdGVD6axsis
+x+1U71oMK1gBke7p4QPUdhJFpSUd6kT8bcO+7rYouoljFNYkUfwnqtUn7525fkfg
+uDqqXvOJMpJ/sK1ajHOeehp5T4Q45L/qUCb3iEYEExECAAYFAltkV0cACgkQOzAR
+t2udZSOoswCdF44NTN09DwhPFbNYhEMb9juP5ykAn0bcELvuKmgDwEwZMrPQkG8t
+Pu9n
+=42uC
+-----END PGP PUBLIC KEY BLOCK-----
+ubuntu@LAPTOP-GDQ3M2RK:~$ curl -L "http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/testing/xUbuntu_20.04/Release.key"|sudo apt-key add -
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  1093  100  1093    0     0    970      0  0:00:01  0:00:01 --:--:--   970
+OK
+ubuntu@LAPTOP-GDQ3M2RK:~$ | sudo apt-key add -
+-bash: syntax error near unexpected token `|'
+ubuntu@LAPTOP-GDQ3M2RK:~$ sudo apt-get update -y
+Hit:1 http://archive.ubuntu.com/ubuntu focal InRelease
+Hit:2 http://security.ubuntu.com/ubuntu focal-security InRelease
+Hit:3 http://archive.ubuntu.com/ubuntu focal-updates InRelease
+Ign:4 https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/testing/xUbuntu_2004.2020.424.0  InReleaseHit:5 http://archive.ubuntu.com/ubuntu focal-backports InRelease
+Err:6 https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/testing/xUbuntu_2004.2020.424.0  Release
+  404  Not Found [IP: 195.135.221.134 443]
+Reading package lists... Done
+E: The repository 'https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/testing/xUbuntu_2004.2020.424.0  Release' does not have a Release file.
+N: Updating from such a repository can't be done securely, and is therefore disabled by default.
+N: See apt-secure(8) manpage for repository creation and user configuration details.
+ubuntu@LAPTOP-GDQ3M2RK:~$ curl -L "http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/testing/xUbuntu_20.04/Release.key"
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+Version: GnuPG v1.4.5 (GNU/Linux)
+
+mQENBFtkV0cBCADStSTCG5qgYtzmWfymHZqxxhfwfS6fdHJcbGUeXsI5dxjeCWhs
+XarZm6rWZOd5WfSmpXhbKOyM6Ll+6bpSl5ICHLa6fcpizYWEPa8fpg9EGl0cF12G
+GgVLnnOZ6NIbsoW0LHt2YN0jn8xKVwyPp7KLHBB2paZh+KuURERG406GXY/DgCxUx
+Ffgdelym/gfmt3DSq6GAQRRGHyucMvPYm53r+jVcKsf2Bp6E1XAfqBrD5r0maaCU
+Wvd7bi0B2Q0hIX0rfDCBpl4rFqvyaMPgn+Bkl6IW37zCkWIXqf1E5eDm/XzP881s
++yAvi+JfDwt7AE+Hd2dSf273o3WUdYJGRwyZABEBAAG0OGRldmVsOmt1YmljIE9C
+UyBQcm9qZWN0IDxkZXZlbDprdWJpY0BidWlsZC5vcGVuc3VzZS5vcmc+iQE+BBMB
+CAAoBQJfcJJOAhsDBQkIKusHBgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRBN
+ZDkDdQYKpB0xCACmtCT6ruPiQa4l0DEptZ+u3NNbZfSVGH4fE4hyTjLbzrCxqcoh
+xJvDKxspuJ85wWFWMtl57+lFFE1KP0AX2XTT+/v2vN1PIfwgOSw3yp2sgWuIXFAi
+89YSjSh8G0SGAH90A9YFMnTbllzGoGURjSX03iasW3A408ljbDehA6rpS3t3FD7P
+PnUF6204orYu00Qvc54an/xVJzxupb69MKW5EeK7x8MJnIToT8hIdOdGVD6axsis
+x+1U71oMK1gBke7p4QPUdhJFpSUd6kT8bcO+7rYouoljFNYkUfwnqtUn7525fkfg
+uDqqXvOJMpJ/sK1ajHOeehp5T4Q45L/qUCb3iEYEExECAAYFAltkV0cACgkQOzAR
+t2udZSOoswCdF44NTN09DwhPFbNYhEMb9juP5ykAn0bcELvuKmgDwEwZMrPQkG8t
+Pu9n
+=42uC
+-----END PGP PUBLIC KEY BLOCK-----
+ubuntu@LAPTOP-GDQ3M2RK:~$ curl -L "http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/testing/xUbuntu_20.04/Release.key"| sudo apt-key add -
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  1093  100  1093    0     0   1380      0 --:--:-- --:--:-- --:--:--  1380
+OK
+ubuntu@LAPTOP-GDQ3M2RK:~$ curl -L "http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/testing/xUbuntu_20.04/Release.key"
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+Version: GnuPG v1.4.5 (GNU/Linux)
+
+mQENBFtkV0cBCADStSTCG5qgYtzmWfymHZqxxhfwfS6fdHJcbGUeXsI5dxjeCWhs
+XarZm6rWZOd5WfSmpXhbKOyM6Ll+6bpSl5ICHLa6fcpizYWEPa8fpg9EGl0cF12G
+GgVLnnOZ6NIbsoW0LHt2YN0jn8xKVwyPp7KLHB2paZh+KuURERG406GXY/DgCxUx
+Ffgdelym/gfmt3DSq6GAQRRGHyucMvPYm53r+jVcKsf2Bp6E1XAfqBrD5r0maaCU
+Wvd7bi0B2Q0hIX0rfDCBpl4rFqvyaMPgn+Bkl6IW37zCkWIXqf1E5eDm/XzP881s
++yAvi+JfDwt7AE+Hd2dSf273o3WUdYJGRwyZABEBAAG0OGRldmVsOmt1YmljIE9C
+UyBQcm9qZWN0IDxkZXZlbDprdWJpY0BidWlsZC5vcGVuc3VzZS5vcmc+iQE+BBMB
+CAAoBQJfcJJOAhsDBQkIKusHBgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRBN
+ZDkDdQYKpB0xCACmtCT6ruPiQa4l0DEptZ+u3NNbZfSVGH4fE4hyTjLbzrCxqcoh
+xJvDKxspuJ85wWFWMtl57+lFFE1KP0AX2XTT+/v2vN1PIfwgOSw3yp2sgWuIXFAi
+89YSjSh8G0SGAH90A9YFMnTbllzGoGURjSX03iasW3A408ljbDehA6rpS3t3FD7P
+PnUF6204orYu00Qvc54an/xVJzxupb69MKW5EeK7x8MJnIToT8hIdOdGVD6axsis
+x+1U71oMK1gBke7p4QPUdhJFpSUd6kT8bcO+7rYouoljFNYkUfwnqtUn7525fkfg
+uDqqXvOJMpJ/sK1ajHOeehp5T4Q45L/qUCb3iEYEExECAAYFAltkV0cACgkQOzAR
+t2udZSOoswCdF44NTN09DwhPFbNYhEMb9juP5ykAn0bcELvuKmgDwEwZMrPQkG8t
+Pu9n
+=42uC
+-----END PGP PUBLIC KEY BLOCK-----
+ubuntu@LAPTOP-GDQ3M2RK:~$ sudo apt-key add Release.key"
+> ^C
+ubuntu@LAPTOP-GDQ3M2RK:~$ sudo apt-key add Release.key
+gpg: can't open 'Release.key': No such file or directory
+ubuntu@LAPTOP-GDQ3M2RK:~$ curl -L "http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/testing/xUbuntu_20.04/Release.key" -o Release.key
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  1093  100  1093    0     0   2194      0 --:--:-- --:--:-- --:--:--  2190
+ubuntu@LAPTOP-GDQ3M2RK:~$ echo $Release.key
+.key
+ubuntu@LAPTOP-GDQ3M2RK:~$ echo $"Release.key"
+Release.key
+ubuntu@LAPTOP-GDQ3M2RK:~$ echo "$Release.key"
+.key
+ubuntu@LAPTOP-GDQ3M2RK:~$ curl -L -O "http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/testing/xUbuntu_20.04/Release.key" Release.key
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  1093  100  1093    0     0   1624      0 --:--:-- --:--:-- --:--:--  1624
+curl: (6) Could not resolve host: Release.key
+ubuntu@LAPTOP-GDQ3M2RK:~$ curl -L "http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/testing/xUbuntu_20.04/Release.key" >>  Release.key
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  1093  100  1093    0     0   1140      0 --:--:-- --:--:-- --:--:--  1139
+ubuntu@LAPTOP-GDQ3M2RK:~$ echo $Release.key"
+> ^C
+ubuntu@LAPTOP-GDQ3M2RK:~$ echo "$Release.key"
+.key
+ubuntu@LAPTOP-GDQ3M2RK:~$ sudo apt-key add Release.key
+OK
+ubuntu@LAPTOP-GDQ3M2RK:~$ sudo apt-get update -y
+Hit:1 http://security.ubuntu.com/ubuntu focal-security InRelease
+Hit:2 http://archive.ubuntu.com/ubuntu focal InRelease
+Hit:3 http://archive.ubuntu.com/ubuntu focal-updates InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu focal-backports InRelease
+Ign:5 https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/testing/xUbuntu_2004.2020.424.0  InReleaseErr:6 https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/testing/xUbuntu_2004.2020.424.0  Release
+  404  Not Found [IP: 195.135.221.134 443]
+Reading package lists... Done
+E: The repository 'https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/testing/xUbuntu_2004.2020.424.0  Release' does not have a Release file.
+N: Updating from such a repository can't be done securely, and is therefore disabled by default.
+N: See apt-secure(8) manpage for repository creation and user configuration details.
+ubuntu@LAPTOP-GDQ3M2RK:~$ echo "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/testing/xUbuntu_20.04/ /" | sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:testing.list
+deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/testing/xUbuntu_20.04/ /
+ubuntu@LAPTOP-GDQ3M2RK:~$ sudo apt-get update -y
+Hit:1 http://archive.ubuntu.com/ubuntu focal InRelease
+Hit:2 http://archive.ubuntu.com/ubuntu focal-updates InRelease
+Hit:3 http://archive.ubuntu.com/ubuntu focal-backports InRelease
+Hit:4 http://security.ubuntu.com/ubuntu focal-security InRelease
+Get:5 https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/testing/xUbuntu_20.04  InRelease [1637 B]
+Get:6 https://mirrorcache.opensuse.org/repositories/devel:/kubic:/libcontainers:/testing/xUbuntu_20.04  Packages [15.9 kB]
+Fetched 17.6 kB in 5s (3312 B/s)
+Reading package lists... Done
+ubuntu@LAPTOP-GDQ3M2RK:~$ sudo apt-get install -y podman
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+The following additional packages will be installed:
+  catatonit conmon containernetworking-plugins containers-common criu crun dns-root-data dnsmasq-base fuse-overlayfs
+  fuse3 libfuse3-3 libidn11 libnet1 libnl-3-200 libprotobuf-c1 libprotobuf17 libyajl2 podman-machine-cni
+  podman-plugins python3-protobuf slirp4netns uidmap
+The following packages will be REMOVED:
+  fuse
+The following NEW packages will be installed:
+  catatonit conmon containernetworking-plugins containers-common criu crun dns-root-data dnsmasq-base fuse-overlayfs
+  fuse3 libfuse3-3 libidn11 libnet1 libnl-3-200 libprotobuf-c1 libprotobuf17 libyajl2 podman podman-machine-cni
+  podman-plugins python3-protobuf slirp4netns uidmap
+0 upgraded, 23 newly installed, 1 to remove and 255 not upgraded.
+Need to get 30.7 MB of archives.
+After this operation, 154 MB of additional disk space will be used.
+Get:1 http://archive.ubuntu.com/ubuntu focal/universe amd64 libfuse3-3 amd64 3.9.0-2 [74.0 kB]
+Get:2 http://archive.ubuntu.com/ubuntu focal/universe amd64 fuse3 amd64 3.9.0-2 [24.7 kB]
+Get:3 http://archive.ubuntu.com/ubuntu focal/main amd64 libprotobuf17 amd64 3.6.1.3-2ubuntu5 [798 kB]
+Get:15 http://archive.ubuntu.com/ubuntu focal/main amd64 python3-protobuf amd64 3.6.1.3-2ubuntu5 [298 kB]
+Get:16 http://archive.ubuntu.com/ubuntu focal/main amd64 libnet1 amd64 1.1.6+dfsg-3.1build1 [43.3 kB]
+Get:17 http://archive.ubuntu.com/ubuntu focal/main amd64 libnl-3-200 amd64 3.4.0-1 [53.9 kB]
+Get:18 http://archive.ubuntu.com/ubuntu focal/universe amd64 libprotobuf-c1 amd64 1.3.3-1 [18.9 kB]
+Get:19 http://archive.ubuntu.com/ubuntu focal/main amd64 libyajl2 amd64 2.1.0-3 [20.1 kB]
+Get:20 http://archive.ubuntu.com/ubuntu focal/main amd64 dns-root-data all 2019052802 [5300 B]
+Get:21 http://archive.ubuntu.com/ubuntu focal/main amd64 libidn11 amd64 1.33-2.2ubuntu2 [46.2 kB]
+Get:22 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 dnsmasq-base amd64 2.80-1.1ubuntu1.4 [315 kB]
+Get:23 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 uidmap amd64 1:4.8.1-1ubuntu5.20.04.1 [26.3 kB]
+Get:4 https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/testing/xUbuntu_20.04  catatonit 0.1.7-1 [275 kB]
+Get:5 https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/testing/xUbuntu_20.04  conmon 100:2.0.30-2 [34.5 kB]
+Get:6 https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/testing/xUbuntu_20.04  containers-common 100:1-22 [52.4 kB]
+Get:7 https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/testing/xUbuntu_20.04  criu 3.16.1-3 [662 kB]
+Get:8 https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/testing/xUbuntu_20.04  crun 100:1.3-1 [254 kB]
+Get:9 https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/testing/xUbuntu_20.04  fuse-overlayfs 100:1.5.0-1 [41.9 kB]
+Get:10 https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/testing/xUbuntu_20.04  podman-plugins 100:1.2.0-1 [1035 kB]
+Get:11 https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/testing/xUbuntu_20.04  podman-machine-cni 100:0.0.0-1 [1640 kB]
+Get:12 https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/testing/xUbuntu_20.04  podman 100:3.4.2-1 [17.7 MB]
+Get:13 https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/testing/xUbuntu_20.04  slirp4netns 100:1.1.8-3 [715 kB]
+Get:14 https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/testing/xUbuntu_20.04  containernetworking-plugins 100:1.0.0-1 [6523 kB]
+Fetched 30.7 MB in 22s (1387 kB/s)
+Selecting previously unselected package libfuse3-3:amd64.
+(Reading database ... 31836 files and directories currently installed.)
+Preparing to unpack .../libfuse3-3_3.9.0-2_amd64.deb ...
+Unpacking libfuse3-3:amd64 (3.9.0-2) ...
+dpkg: fuse: dependency problems, but removing anyway as you requested:
+ ntfs-3g depends on fuse.
+
+(Reading database ... 31844 files and directories currently installed.)
+Removing fuse (2.9.9-3) ...
+update-initramfs: deferring update (trigger activated)
+Selecting previously unselected package fuse3.
+(Reading database ... 31834 files and directories currently installed.)
+Preparing to unpack .../00-fuse3_3.9.0-2_amd64.deb ...
+Unpacking fuse3 (3.9.0-2) ...
+Selecting previously unselected package catatonit.
+Preparing to unpack .../01-catatonit_0.1.7-1_amd64.deb ...
+Unpacking catatonit (0.1.7-1) ...
+Selecting previously unselected package conmon.
+Preparing to unpack .../02-conmon_100%3a2.0.30-2_amd64.deb ...
+Unpacking conmon (100:2.0.30-2) ...
+Selecting previously unselected package containers-common.
+Preparing to unpack .../03-containers-common_100%3a1-22_all.deb ...
+Unpacking containers-common (100:1-22) ...
+Selecting previously unselected package libprotobuf17:amd64.
+Preparing to unpack .../04-libprotobuf17_3.6.1.3-2ubuntu5_amd64.deb ...
+Unpacking libprotobuf17:amd64 (3.6.1.3-2ubuntu5) ...
+Selecting previously unselected package python3-protobuf.
+Preparing to unpack .../05-python3-protobuf_3.6.1.3-2ubuntu5_amd64.deb ...
+Unpacking python3-protobuf (3.6.1.3-2ubuntu5) ...
+Selecting previously unselected package libnet1:amd64.
+Preparing to unpack .../06-libnet1_1.1.6+dfsg-3.1build1_amd64.deb ...
+Unpacking libnet1:amd64 (1.1.6+dfsg-3.1build1) ...
+Selecting previously unselected package libnl-3-200:amd64.
+Preparing to unpack .../07-libnl-3-200_3.4.0-1_amd64.deb ...
+Unpacking libnl-3-200:amd64 (3.4.0-1) ...
+Selecting previously unselected package libprotobuf-c1:amd64.
+Preparing to unpack .../08-libprotobuf-c1_1.3.3-1_amd64.deb ...
+Unpacking libprotobuf-c1:amd64 (1.3.3-1) ...
+Selecting previously unselected package criu.
+Preparing to unpack .../09-criu_3.16.1-3_amd64.deb ...
+Unpacking criu (3.16.1-3) ...
+Selecting previously unselected package libyajl2:amd64.
+Preparing to unpack .../10-libyajl2_2.1.0-3_amd64.deb ...
+Unpacking libyajl2:amd64 (2.1.0-3) ...
+Selecting previously unselected package crun.
+Preparing to unpack .../11-crun_100%3a1.3-1_amd64.deb ...
+Unpacking crun (100:1.3-1) ...
+Selecting previously unselected package dns-root-data.
+Preparing to unpack .../12-dns-root-data_2019052802_all.deb ...
+Unpacking dns-root-data (2019052802) ...
+Selecting previously unselected package libidn11:amd64.
+Preparing to unpack .../13-libidn11_1.33-2.2ubuntu2_amd64.deb ...
+Unpacking libidn11:amd64 (1.33-2.2ubuntu2) ...
+Selecting previously unselected package dnsmasq-base.
+Preparing to unpack .../14-dnsmasq-base_2.80-1.1ubuntu1.4_amd64.deb ...
+Unpacking dnsmasq-base (2.80-1.1ubuntu1.4) ...
+Selecting previously unselected package fuse-overlayfs.
+Preparing to unpack .../15-fuse-overlayfs_100%3a1.5.0-1_amd64.deb ...
+Unpacking fuse-overlayfs (100:1.5.0-1) ...
+Selecting previously unselected package podman-plugins.
+Preparing to unpack .../16-podman-plugins_100%3a1.2.0-1_amd64.deb ...
+Unpacking podman-plugins (100:1.2.0-1) ...
+Selecting previously unselected package podman-machine-cni.
+Preparing to unpack .../17-podman-machine-cni_100%3a0.0.0-1_amd64.deb ...
+Unpacking podman-machine-cni (100:0.0.0-1) ...
+Selecting previously unselected package podman.
+Preparing to unpack .../18-podman_100%3a3.4.2-1_amd64.deb ...
+Unpacking podman (100:3.4.2-1) ...
+Selecting previously unselected package slirp4netns.
+Preparing to unpack .../19-slirp4netns_100%3a1.1.8-3_amd64.deb ...
+Unpacking slirp4netns (100:1.1.8-3) ...
+Selecting previously unselected package uidmap.
+Preparing to unpack .../20-uidmap_1%3a4.8.1-1ubuntu5.20.04.1_amd64.deb ...
+Unpacking uidmap (1:4.8.1-1ubuntu5.20.04.1) ...
+Selecting previously unselected package containernetworking-plugins.
+Preparing to unpack .../21-containernetworking-plugins_100%3a1.0.0-1_amd64.deb ...
+Unpacking containernetworking-plugins (100:1.0.0-1) ...
+Setting up slirp4netns (100:1.1.8-3) ...
+Setting up uidmap (1:4.8.1-1ubuntu5.20.04.1) ...
+Setting up libyajl2:amd64 (2.1.0-3) ...
+Setting up libnet1:amd64 (1.1.6+dfsg-3.1build1) ...
+Setting up libprotobuf-c1:amd64 (1.3.3-1) ...
+Setting up dns-root-data (2019052802) ...
+Setting up conmon (100:2.0.30-2) ...
+Setting up containernetworking-plugins (100:1.0.0-1) ...
+Setting up libidn11:amd64 (1.33-2.2ubuntu2) ...
+Setting up catatonit (0.1.7-1) ...
+Setting up containers-common (100:1-22) ...
+Setting up libfuse3-3:amd64 (3.9.0-2) ...
+Setting up libnl-3-200:amd64 (3.4.0-1) ...
+Setting up libprotobuf17:amd64 (3.6.1.3-2ubuntu5) ...
+Setting up python3-protobuf (3.6.1.3-2ubuntu5) ...
+Setting up dnsmasq-base (2.80-1.1ubuntu1.4) ...
+Setting up podman-machine-cni (100:0.0.0-1) ...
+Setting up fuse3 (3.9.0-2) ...
+Installing new version of config file /etc/fuse.conf ...
+update-initramfs: deferring update (trigger activated)
+Setting up podman-plugins (100:1.2.0-1) ...
+Setting up criu (3.16.1-3) ...
+Setting up fuse-overlayfs (100:1.5.0-1) ...
+Setting up crun (100:1.3-1) ...
+Setting up podman (100:3.4.2-1) ...
+Processing triggers for dbus (1.12.16-2ubuntu2) ...
+Processing triggers for initramfs-tools (0.136ubuntu6) ...
+Processing triggers for libc-bin (2.31-0ubuntu9) ...
+Processing triggers for man-db (2.9.1-1) ...
+ubuntu@LAPTOP-GDQ3M2RK:~$ kubectl cluster-info
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+The connection to the server localhost:8080 was refused - did you specify the right host or port?
+ubuntu@LAPTOP-GDQ3M2RK:~$ podman info
+WARN[0000] "/" is not a shared mount, this could cause issues or missing mounts with rootless containers
+host:
+  arch: amd64
+  buildahVersion: 1.23.1
+  cgroupControllers: []
+  cgroupManager: cgroupfs
+  cgroupVersion: v1
+  conmon:
+    package: 'conmon: /usr/libexec/podman/conmon'
+    path: /usr/libexec/podman/conmon
+    version: 'conmon version 2.0.30, commit: '
+  cpus: 8
+  distribution:
+    codename: focal
+    distribution: ubuntu
+    version: "20.04"
+  eventLogger: file
+  hostname: LAPTOP-GDQ3M2RK
+  idMappings:
+    gidmap:
+    - container_id: 0
+      host_id: 1000
+      size: 1
+    - container_id: 1
+      host_id: 100000
+      size: 65536
+    uidmap:
+    - container_id: 0
+      host_id: 1000
+      size: 1
+    - container_id: 1
+      host_id: 100000
+      size: 65536
+  kernel: 5.10.16.3-microsoft-standard-WSL2
+  linkmode: dynamic
+  logDriver: k8s-file
+  memFree: 7135748096
+  memTotal: 8227643392
+  ociRuntime:
+    name: crun
+    package: 'crun: /usr/bin/crun'
+    path: /usr/bin/crun
+    version: |-
+      crun version 1.3.7-506ba
+      commit: 7b4a7042370eea7fb00d3a4da34332b26f080acd
+      spec: 1.0.0
+      +SYSTEMD +SELINUX +APPARMOR +CAP +SECCOMP +EBPF +CRIU +YAJL
+  os: linux
+  remoteSocket:
+    path: /mnt/wslg/runtime-dir/podman/podman.sock
+  security:
+    apparmorEnabled: false
+    capabilities: CAP_CHOWN,CAP_DAC_OVERRIDE,CAP_FOWNER,CAP_FSETID,CAP_KILL,CAP_NET_BIND_SERVICE,CAP_SETFCAP,CAP_SETGID,CAP_SETPCAP,CAP_SETUID,CAP_SYS_CHROOT
+    rootless: true
+    seccompEnabled: true
+    seccompProfilePath: /usr/share/containers/seccomp.json
+    selinuxEnabled: false
+  serviceIsRemote: false
+  slirp4netns:
+    executable: /usr/bin/slirp4netns
+    package: 'slirp4netns: /usr/bin/slirp4netns'
+    version: |-
+      slirp4netns version 1.1.8
+      commit: unknown
+      libslirp: 4.3.1-git
+      SLIRP_CONFIG_VERSION_MAX: 3
+      libseccomp: 2.5.1
+  swapFree: 2146422784
+  swapTotal: 2147483648
+  uptime: 16h 6m 39.12s (Approximately 0.67 days)
+plugins:
+  log:
+  - k8s-file
+  - none
+  - journald
+  network:
+  - bridge
+  - macvlan
+  volume:
+  - local
+registries:
+  search:
+  - docker.io
+  - quay.io
+store:
+  configFile: /home/ubuntu/.config/containers/storage.conf
+  containerStore:
+    number: 0
+    paused: 0
+    running: 0
+    stopped: 0
+  graphDriverName: overlay
+  graphOptions:
+    overlay.mount_program:
+      Executable: /usr/bin/fuse-overlayfs
+      Package: 'fuse-overlayfs: /usr/bin/fuse-overlayfs'
+      Version: |-
+        fusermount3 version: 3.9.0
+        fuse-overlayfs: version 1.5
+        FUSE library version 3.9.0
+        using FUSE kernel interface version 7.31
+  graphRoot: /home/ubuntu/.local/share/containers/storage
+  graphStatus:
+    Backing Filesystem: extfs
+    Native Overlay Diff: "false"
+    Supports d_type: "true"
+    Using metacopy: "false"
+  imageStore:
+    number: 0
+  runRoot: /mnt/wslg/runtime-dir/containers
+  volumePath: /home/ubuntu/.local/share/containers/storage/volumes
+version:
+  APIVersion: 3.4.2
+  Built: 0
+  BuiltTime: Thu Jan  1 05:30:00 1970
+  GitCommit: ""
+  GoVersion: go1.16.6
+  OsArch: linux/amd64
+  Version: 3.4.2
+
+ubuntu@LAPTOP-GDQ3M2RK:~$ podman images
+REPOSITORY  TAG         IMAGE ID    CREATED     SIZE
+ubuntu@LAPTOP-GDQ3M2RK:~$  podman pull docker.io/library/httpd
+Trying to pull docker.io/library/httpd:latest...
+Getting image source signatures
+Copying blob a43a76ccc967 done
+Copying blob cdb155854ae6 done
+Copying blob 942bd346e7f7 done
+Copying blob 5eb5b503b376 done
+Copying blob 10c4d45228bf done
+Copying config a8ea074f45 done
+Writing manifest to image destination
+Storing signatures
+a8ea074f4566addcd01f9745397f32be471df4a4abf200f0f10c885ed14b1d28
+ubuntu@LAPTOP-GDQ3M2RK:~$ podman images
+REPOSITORY               TAG         IMAGE ID      CREATED      SIZE
+docker.io/library/httpd  latest      a8ea074f4566  4 weeks ago  148 MB
+ubuntu@LAPTOP-GDQ3M2RK:~$ podman run -dt -p 8080:80/tcp docker.io/library/httpd
+d42dd0772fdc3132706929025021e9010c758410ae82204120f05a56936e858a
+ubuntu@LAPTOP-GDQ3M2RK:~$ podman ps
+CONTAINER ID  IMAGE                           COMMAND           CREATED         STATUS             PORTS                 NAMES
+d42dd0772fdc  docker.io/library/httpd:latest  httpd-foreground  11 seconds ago  Up 11 seconds ago  0.0.0.0:8080->80/tcp  xenodochial_boyd
+ubuntu@LAPTOP-GDQ3M2RK:~$ ./minikube start  --vm-driver=podman
+😄  minikube v1.25.2 on Ubuntu 20.04 (amd64)
+✨  Using the podman driver based on user configuration
+
+💣  Exiting due to PROVIDER_PODMAN_NOT_RUNNING: "sudo -k -n podman version --format " exit status 1: sudo: a password is required
+💡  Suggestion: Add your user to the 'sudoers' file: 'ubuntu ALL=(ALL) NOPASSWD: /usr/bin/podman'
+📘  Documentation: https://podman.io
+
+ubuntu@LAPTOP-GDQ3M2RK:~$ sudo -k -n podman version --format
+sudo: a password is required
+ubuntu@LAPTOP-GDQ3M2RK:~$ minikube start --driver podman
+
+Command 'minikube' not found, did you mean:
+
+  command 'minitube' from deb minitube (3.1-1build1)
+
+Try: sudo apt install <deb name>
+
+
+ubuntu@LAPTOP-GDQ3M2RK:~$ ./minikube start
+😄  minikube v1.25.2 on Ubuntu 20.04 (amd64)
+👎  Unable to pick a default driver. Here is what was considered, in preference order:
+    ▪ podman: Not healthy: "sudo -k -n podman version --format {{.Version}}" exit status 1: sudo: a password is required    ▪ podman: Suggestion: Add your user to the 'sudoers' file: 'ubuntu ALL=(ALL) NOPASSWD: /usr/bin/podman' <https://podman.io>
+💡  Alternatively you could install one of these drivers:
+    ▪ docker: Not installed: exec: "docker": executable file not found in $PATH
+    ▪ kvm2: Not installed: exec: "virsh": executable file not found in $PATH
+    ▪ vmware: Not installed: exec: "docker-machine-driver-vmware": executable file not found in $PATH
+    ▪ virtualbox: Not installed: unable to find VBoxManage in $PATH
+
+❌  Exiting due to DRV_NOT_HEALTHY: Found driver(s) but none were healthy. See above for suggestions how to fix installed drivers.
+
+ubuntu@LAPTOP-GDQ3M2RK:~$ whoami
+ubuntu
+ubuntu@LAPTOP-GDQ3M2RK:~$ ./minikube start --driver podman
+😄  minikube v1.25.2 on Ubuntu 20.04 (amd64)
+✨  Using the podman driver based on user configuration
+
+💣  Exiting due to PROVIDER_PODMAN_NOT_RUNNING: "sudo -k -n podman version --format " exit status 1: sudo: a password is required
+💡  Suggestion: Add your user to the 'sudoers' file: 'ubuntu ALL=(ALL) NOPASSWD: /usr/bin/podman'
+📘  Documentation: https://podman.io
+
+ubuntu@LAPTOP-GDQ3M2RK:~$ less /etc/sudoers
+/etc/sudoers: Permission denied
+ubuntu@LAPTOP-GDQ3M2RK:~$ ls -ltr /etc/
+total 812
+-rw-r--r-- 1 root root        887 Apr  1  2013 rpc
+-rw-r--r-- 1 root root       2932 Apr  2  2013 protocols
+-rw-r--r-- 1 root root       3663 Jun 20  2016 screenrc
+-rw-r--r-- 1 root root        604 Sep 16  2018 deluser.conf
+-rw-r----- 1 root daemon      144 Nov 12  2018 at.deny
+-rw-r--r-- 1 root root       1260 Dec 14  2018 ucf.conf
+-rw-r--r-- 1 root root        533 Jan 21  2019 logrotate.conf
+-rw-r--r-- 1 root root      14867 Feb  1  2019 ltrace.conf
+-rw-r--r-- 1 root root       4942 Jul 25  2019 wgetrc
+-rw-r--r-- 1 root root       2969 Aug  3  2019 debconf.conf
+-rw-r--r-- 1 root root       5060 Aug 21  2019 hdparm.conf
+-rw-r--r-- 1 root root        642 Sep 24  2019 xattr.conf
+-rw-r--r-- 1 root root        477 Oct  7  2019 zsh_command_not_found
+-rw-r--r-- 1 root root      24546 Oct 19  2019 mime.types
+-rw-r--r-- 1 root root        449 Oct 19  2019 mailcap.order
+-rw-r--r-- 1 root root      10593 Nov  7  2019 sensors3.conf
+-rw-r--r-- 1 root root        581 Dec  5  2019 profile
+-rw-r--r-- 1 root root         91 Dec  5  2019 networks
+-rw-r--r-- 1 root root        267 Dec  5  2019 legal
+-rw-r--r-- 1 root root         92 Dec  5  2019 host.conf
+-rw-r--r-- 1 root root         13 Dec  5  2019 debian_version
+-rw-r--r-- 1 root root        552 Dec 17  2019 pam.conf
+-rw-r--r-- 1 root root       1816 Dec 27  2019 ethertypes
+-rw-r--r-- 1 root root        111 Jan 17  2020 magic.mime
+-rw-r--r-- 1 root root        111 Jan 17  2020 magic
+-rw-r--r-- 1 root root         45 Jan 26  2020 bash_completion
+-rw-r--r-- 1 root root       2584 Feb  1  2020 gai.conf
+-r--r----- 1 root root        755 Feb  3  2020 sudoers
+-rw-r--r-- 1 root root      10037 Feb  7  2020 nanorc
+-rw-r--r-- 1 root root      10550 Feb  7  2020 login.defs
+-rw-r--r-- 1 root root       1382 Feb 11  2020 rsyslog.conf
+-rw-r--r-- 1 root root       1042 Feb 14  2020 crontab
+drwxr-xr-x 2 root root       4096 Apr 23  2020 modules-load.d
+-rw-r--r-- 1 root root       3028 Apr 23  2020 adduser.conf
+-rw-r--r-- 1 root root      28461 Feb 27 16:02 ld.so.cache
+
+ubuntu@LAPTOP-GDQ3M2RK:~$ ls -ltr /etc/sudoers
+-r--r----- 1 root root 755 Feb  3  2020 /etc/sudoers
+
+root@LAPTOP-GDQ3M2RK:~# sudo su
+root@LAPTOP-GDQ3M2RK:~# su ubunutu
+su: user ubunutu does not exist
+root@LAPTOP-GDQ3M2RK:~# su ubuntu
+ubuntu@LAPTOP-GDQ3M2RK:~$ ls -ltr
+total 70964
+-rw-r--r-- 1 ubuntu ubuntu       64 Feb 26 17:46 kubectl.sha256
+-rw-r--r-- 1 ubuntu ubuntu       64 Feb 27 15:26 kubectl-convert.sha256
+-rwxr-xr-x 1 ubuntu ubuntu 72651748 Feb 27 15:33 minikube
+-rw-r--r-- 1 ubuntu ubuntu     2186 Feb 27 15:58 Release.key
+ubuntu@LAPTOP-GDQ3M2RK:~$ ./minikube start --driver podman
+😄  minikube v1.25.2 on Ubuntu 20.04 (amd64)
+✨  Using the podman driver based on user configuration
+
+💣  Exiting due to PROVIDER_PODMAN_NOT_RUNNING: "sudo -k -n podman version --format " exit status 1: sudo: a password is required
+💡  Suggestion: Add your user to the 'sudoers' file: 'ubuntu ALL=(ALL) NOPASSWD: /usr/bin/podman'
+📘  Documentation: https://podman.io
+
+ubuntu@LAPTOP-GDQ3M2RK:~$ vi /etc/sudoers
+ubuntu@LAPTOP-GDQ3M2RK:~$ vi /etc/sudoers
+ubuntu@LAPTOP-GDQ3M2RK:~$ sudo su
+root@LAPTOP-GDQ3M2RK:/home/ubuntu# cd /etc/
+root@LAPTOP-GDQ3M2RK:/etc# vi sudoers
+root@LAPTOP-GDQ3M2RK:/etc# cd -
+/home/ubuntu
+
+root@LAPTOP-GDQ3M2RK:/home/ubuntu# su ubuntu
+ubuntu@LAPTOP-GDQ3M2RK:~$ ./minikube start --driver podman
+😄  minikube v1.25.2 on Ubuntu 20.04 (amd64)
+✨  Using the podman driver based on user configuration
+👍  Starting control plane node minikube in cluster minikube
+🚜  Pulling base image ...
+💾  Downloading Kubernetes v1.23.3 preload ...
+    > preloaded-images-k8s-v17-v1...: 505.68 MiB / 505.68 MiB  100.00% 1.08 MiB
+    > gcr.io/k8s-minikube/kicbase: 379.06 MiB / 379.06 MiB  100.00% 776.67 KiB
+E0227 16:53:17.480169   10666 cache.go:203] Error downloading kic artifacts:  not yet implemented, see issue #8426
+🔥  Creating podman container (CPUs=2, Memory=2200MB) ...
+🐳  Preparing Kubernetes v1.23.3 on Docker 20.10.12 ...
+    ▪ kubelet.housekeeping-interval=5m
+    ▪ Generating certificates and keys ...
+    ▪ Booting up control plane ...
+    ▪ Configuring RBAC rules ...
+🔎  Verifying Kubernetes components...
+    ▪ Using image gcr.io/k8s-minikube/storage-provisioner:v5
+🌟  Enabled addons: storage-provisioner, default-storageclass
+🏄  Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
+ubuntu@LAPTOP-GDQ3M2RK:~$ kubectl cluster-info
+Kubernetes control plane is running at https://192.168.49.2:8443
+CoreDNS is running at https://192.168.49.2:8443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+ubuntu@LAPTOP-GDQ3M2RK:~$ kubectl cluster-info dump
+{
+    "kind": "NodeList",
+    "apiVersion": "v1",
+    "metadata": {
+        "resourceVersion": "471"
+    },
+    "items": [
+        {
+    "items": []
+}
+ubuntu@LAPTOP-GDQ3M2RK:~$ kubectl config current-context
+minikube
+ubuntu@LAPTOP-GDQ3M2RK:~$ kubectl config get-cluster
+error: unknown command "get-cluster"
+See 'kubectl config -h' for help and examples
+ubuntu@LAPTOP-GDQ3M2RK:~$ kubectl config -h
+Modify kubeconfig files using subcommands like "kubectl config set current-context my-context"
+
+ The loading order follows these rules:
+
+  1.  If the --kubeconfig flag is set, then only that file is loaded. The flag may only be set once and no merging takes
+place.
+  2.  If $KUBECONFIG environment variable is set, then it is used as a list of paths (normal path delimiting rules for
+your system). These paths are merged. When a value is modified, it is modified in the file that defines the stanza. When
+a value is created, it is created in the first file that exists. If no files in the chain exist, then it creates the
+last file in the list.
+  3.  Otherwise, ${HOME}/.kube/config is used and no merging takes place.
+
+Available Commands:
+  current-context Display the current-context
+  delete-cluster  Delete the specified cluster from the kubeconfig
+  delete-context  Delete the specified context from the kubeconfig
+  delete-user     Delete the specified user from the kubeconfig
+  get-clusters    Display clusters defined in the kubeconfig
+  get-contexts    Describe one or many contexts
+  get-users       Display users defined in the kubeconfig
+  rename-context  Rename a context from the kubeconfig file
+  set             Set an individual value in a kubeconfig file
+  set-cluster     Set a cluster entry in kubeconfig
+  set-context     Set a context entry in kubeconfig
+  set-credentials Set a user entry in kubeconfig
+  unset           Unset an individual value in a kubeconfig file
+  use-context     Set the current-context in a kubeconfig file
+  view            Display merged kubeconfig settings or a specified kubeconfig file
+
+Usage:
+  kubectl config SUBCOMMAND [options]
+
+Use "kubectl <command> --help" for more information about a given command.
+Use "kubectl options" for a list of global command-line options (applies to all commands).
+ubuntu@LAPTOP-GDQ3M2RK:~$ kubectl config get-clusters
+NAME
+minikube
+ubuntu@LAPTOP-GDQ3M2RK:~$ kubectl config get-contexts
+CURRENT   NAME       CLUSTER    AUTHINFO   NAMESPACE
+*         minikube   minikube   minikube   default
+ubuntu@LAPTOP-GDQ3M2RK:~$ kubectl config get-contexts minikube
+CURRENT   NAME       CLUSTER    AUTHINFO   NAMESPACE
+*         minikube   minikube   minikube   default
+ubuntu@LAPTOP-GDQ3M2RK:~$
+
+To get list of kubectl contexts:-
+ 
+
+If we get error like “The connection to the server localhost:8080 was refused - did you specify the right host or port?”
+ 
+
+It is because you are not running in Cluster. 
+Run a minikube cluster.
+ 
+
+
+Kubeadm:-
+To get the status of master nodes run “kubectl get nodes”
+Exit to come out of vm
+
+ 
+
+Kubeadm installation:-
+sudo apt-get update && sudo apt-get install -y apt-transport-https curl
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
+deb https://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+sudo apt-get update
+sudo apt-get install -y kubeadm
+
+Vagrant Installation:-
+Run all below commands from  
+It is the path where we see powershell installed.
+apt-get install vagrant
+export PATH="$PATH:/mnt/c/Windows/System32/WindowsPowerShell/v1.0"
+export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"
+export PATH="$PATH:/mnt/c/Windows/System32"
+vagrant box add hashicorp/bionic64 (check what all vboxes you have & select the default one)
+export PATH=”$PATH:/mnt/c/Windows/System32/cmd.exe"
+In windows 11, in bios ensure that hyperversion technology is enabled
+& ensure that hyper-V is enabled in “Windows Feature Turn on & off”
+ 
+
+vagrant init hashicorp/precise64
+vagrant up
+
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+ 
+
+
+
