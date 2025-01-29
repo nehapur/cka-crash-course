@@ -1,0 +1,753 @@
+Link- https://learning.oreilly.com/live-events/kubernetes-in-4-hours/0636920056367/0636920056366/   
+Books:-
+ 
+ 
+
+Github link:- https://github.com/sandervanvugt/kubernetes
+K8 is achieved by minikube, docker, GCE,
+Cloud Native Computing:- An application that runs on cloud. The cloud is implemented by nodes. Cloud can be switched between regions& across regions . It is needed to have autoscaling, decoupling
+ 
+
+Decoupling- means kind of an abstraction of an application & everything it needs to run an application which ensures it is connected to one node in the cloud. Decoupling means it could be run from anywhere. Hence, appl is not bound to one machine. We can pickup the app from one node & run it on other, that’s the essesnce of decouping.
+How to implement Decoupling in CNC to run our application from any where in cloud successful?
+We are going to run it as container. COnytaimers are perfect for cloud computing for simple reason that container is based on container image. The image is where to start in order to get access to container & it contains everything. If we compare to traditional app , in traditonal app we have dependencies. While  starting our app we need to make sure that dependencies are well. 
+In container, it is not the case. Container contains everything. Which means when we are going to rin conatienr we domt need to have run anything else. In container we have an app that is running  So container is representing running app but then you have couple of challenges. Because remember it’s all about CNC. CNC decoupling is big world. One of the items that matters for decopling is we want our container to be generic. Which means container has to be specification of a generic code to run it from anywhere. To run container from anywhere we need our config & storage to be externalized from the container. We need configuration & storage to be presented by cloud. because in the end Cloud is all of nodes. 
+ 
+As a software developer, if you are distributing your  container, we need to ensure conatiern is easily usable at no measure which customer sites,  well then we need to implement decoupling & make sure configuration & storage & everything else is decoupled from generic container layer. That is why K8s comes in.
+What is k8? K8s is all about orchestration & orchestration means that your container run anywhere in cloud. But K8 is also implementing decoupling. How is k8 doing that? By defining API resources.
+When we are going to talk about K8s we will notice that your application & all of the dependencies  is chopped into different components that are managed independently by K8s. In terms of K8s we will notice that application running in container , k8 is going to use a pod. In order to manage scalability in container , k8s is running your deployment. In order to configure storage in cnc ,k8 makes sure we have persistent volumne in a configuration. in order to provide config , k8s is working with configmap. All of these stuffs K8 stores in Centrsl DB. Central DB is etcd. Etcd is heart of k8. Etcd contains everything, entire k8s cluster envs. And etcd is hosted by all these diff nods.  All these nodes have access to etcd. While this is the case, you are going to run your application in a container envs. In  order to define your appl in k8s, K8s is using these api resources. And these Api resources are used to mention 4 most importnat api resources pod, deployment, persistent volume, configmap & many more. Hence this allows to not store configuration locally on disk. We need to ensure that application is bound to  nodes that doesn’t respect the fundamental part decoupling in k8 nodes, only resources are stoed in etcd & etcd is shared configurtion of your entire K8s cloud. This is how k8s is all about. K8s is about cnc & when you are new to K8s you might be only oh wow there are so manyb resoucres. Why do we need these many api resoucrs. We need api respurces to give biggest challenge that we have in k8 env, the bigg challenge is we cant store it locally on computing disk, We need storage centrally. That’s what etcd is all about. 
+
+Can we restore etcd:- yes we can
+ 
+Scheduler makes sure that application is running everytime no matter from where.
+Pod:- k8 is offering to run your container.
+Containerization – it is docker
+Podman- Redhat’s container called podman (like docker)
+Container runtime:- is a prog that allows you to run container called docker.
+
+How is k8 related to docker?
+In below case if computer/node goes down, app goes down.
+ 
+Now, in containerized env, we have multiple nodes to run the application in container. Now if container is going down we use s/w like k8, k8s is going to take care of availability of container. If node goes down , k8s make sure that is is starting the conatier somehwhere else again. But k8s does more things. For eg if your container is used for hosting a webshow called holiday & the requests for the webshow is 10 times for the containerized services , you need an option to scale it up. K8s has clustr of nodes& hence it is easy to run the container on all other nodes as well. Hence instead of running one instance, with increase incoming requests K8  scales up the conatiners to other nodes as well & there comes a picture of scalability. The deployment is about rolling it out easily. The mgmnt is about making these managed to run on the cluster. We need something that goes beyond container run time tahts runs on an individual house & that’s the essence of k8s. That’s also the main diff between k8s & docker.
+
+Diff between k8 & Docker Swarm:-
+Dockr swarm is an initiviative by docker ink to offer cloud native features for docker stack. Docker swarm is very efficient that is not k8. Docker swarm is properitry s/w of docker & docker ink charges more money. Hence comes k8 which is free s/w that’s freely available. Hence nobody is interested in docker swarm now. Docker swarm is also about container orchestration.
+
+K8s is about running multiple connected containers across diff hosts, where continuity of services is guaranteed.
+So k8s also allows you to run manual microservices. In microservices you can connect diff applications together. Solution is based on technology that google has been using many years in their DCs. That’s one reason why K8s immediately became success. 
+
+In year 2014:- google has donated a specification of google called google bark. Google bark is a solution that they were running in their Dcs at the start of k8s open source projects.
+
+K8s Orchestration:-
+We can expect k8s to schedule conatiners to run on specific hosts using pods.
+
+Difference between container & pod?
+A pod is the compnent that k8s is using to run the container	
+By running a pod you are adding properties to the continer that do not exist by itself. So pod is adding prop to the conatinr to make that it can be used in the cloud based envs. 
+Remember k8 does not manage conatienrs it manages pods. Pod is the minimal entity managed by K8.
+
+K8s also joins hosts that are running conatiners in an etcd cluster because we just talked abt, in K8s all the config is stored in an etcd cluster & k8 takes care of scalability. That scalability is something that can be happening at app level.
+K8s can also take care of nodes scalability. nodes scalability needs DCs with automatic provisioning so that’s not obvious & it si not easy to implement. 
+But definitely, in terms of additional workload is required we can add nodes to cluster automatically with nodes scalability.
+
+K8s make storage available.
+Lets go back to decopling. Here, the containesr conatienr are running in cloud native env where you are going to store your data? The data is stored in CN storage which is provided by K8s using persistent volume. 
+
+ 
+ 
+K8s also exposes conatienrs using service.
+Now its bit challenging that you have these conatiners irunning somewhere in the cloud which means that they are running on a nodes somewhere in the cloud. How users are going to access them? 
+Well, you have to put something in the front of that. Something like LB & in K8 we call it as service.
+Now, k8s is not the only solution but there are other continer managed soltuions as well & most of the container managment solutions are now-a-days K8s distribution but that doesnt go for all of them.
+
+Lets talk about K8 distributions & other orchestration:-
+
+ 
+Dockerswarm:- is a orchestration solution & it is propriety & hence not vey important many more
+Rancher- Rancher is another K8s distribution. The distribution is in context of vanilla k8s which is based on open source code. & distribution as a company benhind it that is is packaging in a way that it makes easy to use sin a pecific env & where cmpny can provide support as well. Rancher, Redhat, are one of these companies that provide openshift. Openshift is also K8s dirtribution which is adding devops workflow.
+
+Google Anths:- is also K8s dirtibution.
+Amazn k8s dirtbution & azure k8s dirtibutions ,Google K8s distribution which are hosted K8s. Hosted k8s means the ones that are ready-to-use in their cloud envs.
+Pod can have more than one container? – yes.
+
+Fundamental differences between container & VM
+Vms provides a virtualized computing platform that’s’ what not containers  are about. Containers are always starting an application nomatter which container.
+
+ 
+
+ 
+Updates are ddefault rolling updates.
+
+Lets talk k8s host platform:-
+We can buy K8s that is offered as a service by various cloud platforms.
+ 
+
+ 
+
+If we don’t want distributed K8s we can simply use vanilla k8s. 
+
+Container will always have only one app.  
+
+K8s Lab:-
+ 
+
+Minikube needs minimum 4gb for installation.
+
+Docker desktop:- We use K8s on docker desktop after installation. Docker desktop is a binary.
+
+K8s installation:-
+Kubesteup.sh is a shell script which does minikube installation on linu platform.
+Minikube is a vm which is used to run K8s. Kubernetes cluster is now running in that VM. To interact with Kubernetes, we’ll use the command line interface, kubectl.
+
+Steps:-
+ 
+
+ 
+
+
+Kubectl is preferred way to access minikube.
+There’s also a un-preferred way to launch minikube with below command which launches a dashboard in which we can run application.Through dashboard we have limited access & through cli interface we can power on K8s. Only beginners in K8s use dashboard.-
+ 
+Dashboard:-
+ 
+
+
+A.	Creating new resource(new appl) through  dashboard:-
+ 
+
+There are 3 ways through yaml file, through file & through form.
+TThrough form:-
+Nginx- Container image that by default will be fetched from docker hub or google container registry. We need to know which container we are using.
+ 
+
+After clicking on deploy:-
+ 
+Ywllo means deployment ongoing & green means successful deployment.
+
+We can also see the above dashboard using kubectl:-
+  
+
+As you can see above we get default 4 APIs deployment,service(optional),pod,replica.set with application creation.
+K8s is all about container orchestration. But remember, k8s does not directly manage containers but manages pods(a box in which containers run)
+Pod;- we can have multiple conatiners in pod but that’s not suggested. We can also store volume in pods internally. We can extend the container by attaching volume externally as persistent storage as well. Container don’t have ip addresses in pods but pod has ip addresses.
+1.	Containers. 2.Volumes. 3. IP address
+ 
+
+In above application, we have 3 pods for different reasons:- Availability & reachable purpose.
+Availaibility:- 3 pods hence 3 workers.
+Reachable:- if one goes down another is still up.
+
+Worker:- A worker is a generic term for a process that processes a queue, run scheduled jobs using cron, process files, or any number of other support-type activities apart from serving web requests. It doesn’t interact with users or listen on the n/w.
+
+These 3 pods are stored in deployment. Deployment is nothing but an application. Deployment is again api resource. 
+Deployment offers two main properties. 
+       1.    Update (rolling update without downtime to an application)
+2.	Replica set:- is an embedded resource of deployment itself. We don’t have to manage replica set hence drawn here in gray colour. With deployment, replica-set gets created. And replica-set manages the availability of pods. Replica set is all about scalability. 
+Pods have ip addresses. These ip addresses are not reachable externally. Lets say we have 3 ips 172.16.0.1, 172.16.0.2 & 172.16.0.3 for these 3 pods. Now as application is running in container on pods these applications are reachable on these IPs. But as we can’t expose IP addresses directly to external users we provide them a service. 
+Service:- Is an internal LB. This LB si not HA proxy or somewhere running in a cluser. But LB that is running internally in K8s so that when user requ comes in user addresses the service & service addresses one of the instances. That is the secret for having rolling updates in k8s. Users don’t directly connect to pods directly but to service. By nature the connection is stateless which means if one of the pod goes down that really doesn’t matter, the service manages another pod to serve the request. 
+ 
+
+These are the main 4 apis resources that we also need during investigation.
+
+Question:- why do we need pod to run a container. 
+Because K8s was never meant to run a container. Hence we have pod which offers the features to container. 
+What are these features? Kubectl completeion makes kubectl much easier.
+Kubectl describe <pod name>
+ 
+ 
+Kubectl works with scheduler to run pod on specific node to keep track of that information.
+Nides,Ip address,conatienrstorage & additional proprts like QoS (Quality of Service)
+Qos like “node selector”  which allows you to run a pod in specific node. This is not all kubectl allows you to see what’s currently going on properties that are added.
+Kubectl explain pod :- explains api attributes.
+Spec:- is a attribute where all diff proper are defined. 
+ 
+
+In order to look into this specific property :-
+ 
+Properties that are added by pod which are not available in container itself. 
+Affinity Role:- In cluster emnv you might want to create few role as in “application A  should always be together on same node with B or A should never be on node B”
+ 
+
+Active Deadline:- hw long k8 can keep a pod alive considering its dead.So as to cleanup the failed pods.
+Nodeselector:- which allows pod to select a node on which it should be running on.
+Priority:- define priorities in order when cluster is overloaded , high priority pods will survive & low priority pods will not. 
+RestartPolicy:- what should K8s cluster do if pod is stopping? You know if you run a standalone docker container & something bad is happening default behaviour is that your container just stops running.
+If you run a Conatienr in a pod, pod has a restart policy & this restart policy is set to “Always” & that makes sure your K8s is capable of managing it.
+ 
+
+If node is destroyed pod is termintaed. Virtual box wait for you to run an application , pod doesn’t wait it just leaves.
+3
+B.	Creating an application using cli:-
+ 
+This command has no service in it. To run a service we have separate command.
+Config is by default under .kube/
+We are not running the commands with root user as we are not running linux commands but K8s commands. Hence it doesn’t matter what user we are running with kubectl will check into config command the username which is minikube here & runs the k8s commands.
+ 
+ 
+
+Deployment is an application itself & deployment is a std entity that is roled out with K8s. 
+
+To store the container generated data(for local storage) we need persistent volume.
+
+Namespaces:-
+ 
+NS:- is an isolated env. NS usage is to use directory(A directory will have diff apps in it like app1,appb,appc. It’s abt organizing) . If we don’t define NS, pods will run with default NS.
+Default NS:- all the pods are that are started will have default NS.
+Kube-System NS:- is running backend stuffs. K8s itself is installed as container that is why all the backend stuff is running in a separate NS.
+Own NS (for eg MyNS):- 
+Other use of NS is to apply 
+Quota :- which puts limitation. We can apply Quota to nS. For eg we can say MyNS will not use more than 4GigaBytes & not more than 10 pods. And we can set multiple diff things in Quota. 
+RBAC:- to define which user will have what access to pods. For eg bob will have admin rights to pods.
+Every pod is running in a NS & if we don’t define it, it runs in a default NS.
+ 
+
+Multipod container scenario:- Not suggested but if there’s a requirement where one container cant live without another then we put them in same pod. 
+Advantage:- we can configure these containers to use same persistent storage.
+
+Everything we need to run an application we need kubectl. If we want to manage cluster itself we need kubeadm. 
+
+Methods to access:-
+Dashboard,
+Kubectl & kubeadm
+By direct api:- using curl with https in python scripts
+
+Kubectl is inspired from docker commands but has more richer commands than compared to docker itself.	
+ 
+
+ 
+
+The below pods are running on different nodes.
+ 
+
+Deployment has created replicaset & replicaset is managed by deployment. Replicaset manages pods.
+ 
+
+Deployment ready 3/3 :- indicates 3 out of 3 replica has to be available ie 3 pods. 3 pods are uptodate & are available.
+In order to manage these replicas deplo is using replica sets. Replicaset is just an internal thing of deplo which is not really inertesting but for historical correlations replica sets exists as an api resource by itself that is because in the beginning we did not have deploymnts we only had replication config & then deployment was implemned. And deplo cameout with the funcationality of this replication config later. In order to maintain backward compatibility replica set was created by the ddeploymnts. Then the replicaset itself is managing pods.
+
+ 
+ 
+Deplo contains replicas as parameter which is managed as separate resource as well. But the msg is don’t look at the replicasets , don’t manage replicasets individually. Manage it through deplo & thru deplo only. We can also see that deplo is defining a strategy type. The above screenshit shows that deplo is taking crae of container as well as replications.
+
+
+ 
+& then we use get all command immediately while the deletion is still running in background:-
+ 
+
+We see that there are only two pods in deployment.apps/mynginx. While there’s another one getting created with status “ContainerCreating” 0/1 with different pods(other than what we deleted mynginx-6b78685d4d-kx9gf). If we again run “get all” command we will see status of pod as Running with 1/1.
+
+
+ 
+
+This is what all about, deployment is managing availaibility. If one pod goes down deplo creates the another one.
+
+How does it work for replicaset:-
+ 
+
+And we see that replicaset with exact same name is recrated by deployment
+ 
+
+If you delete a replicaset or a pods , the deplo will create it again. 
+Did you observe something?:- With the deletion of previos replicaset the pods in it are terminted & deplo has taken care of creating another pods in new reoplicaset.
+
+Kubectl run will create naked pods & with naked pods we don’t get the benefit of deployments. Because if naked pod goes away nobody can start it again. Hence naked pods are useless.
+
+Kubectl create:- Creating application through commandline
+
+Why do we want k8s to work in a declarative way?
+Becaue with decalartive way we use yaml file or caac(Configuration as a code) & its easy to manage versioning. Create/update Caac in yaml file, put that yaml file in github repo & distribute right version of yaml code to right people.	
+
+How do we create yaml file:-
+ 
+This will create a yaml code for me.
+ 
+
+
+To redirect it in a yaml file;-
+ 
+ 
+ 
+
+With kubectl explain we see attributes that can be used in ayaml file:-
+ 
+
+ 
+
+For eg minreadyseconds:-
+ 
+
+To look more into template attribute:-
+ 
+
+ 
+
+To look more into template’s spec properties  
+
+Here below we can see the diff attributes that we use while defining pod:-
+ 
+
+To run the yaml file:-
+ 
+
+We can see that another deployment is added 
+ 
+
+History:-
+ 
+
+Kubectl create:- Will create a deployment if it doesn’t exist. 
+Kubectl apply:- will make changes to properties if the deployment exists. Its not often used
+
+Using yaml file to create deployment is a declarative way.
+
+Kubectl Naked deplpyment:-
+ 
+ Kubectl delete will delete the pod. Also naked pods will not do rolling updates. If you want to benefit from the benefits of K8s then create deployments.
+ 
+
+Kubectl mariadb deployment with listing of all pods using “kubectl get all” 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+To fine tune the output which should be restricted only to mariadb use –show-labels
+ 
+
+ 
+
+Well, now in above mariadb deployment we see Error & CrashLoopBackoff.
+To investigate this we shpuld start investigation from application level:-
+Kubectl describe <any pod among the above 3>
+ 
+The above error shows that application itself is generating an error.
+
+ 
+
+We can set above variables using env , if we forget to set env variables in application we can set as below command:-
+The hash symbol # will not execute the command:-
+ 
+Now, the below command will set an env variable on deployment mydb.
+ 
+ Concentrate eblow on replicaset, pod status,Up-To-Date. The above command will apply the changes on existing deployment by creating new replicaser which creates new containers in it. The new containers will get this properties (here in this case the property is MYSQL_ROOT_Password env)
+ 
+As you can below the new replicaset has 3 new pods in which 3 containers are running. Here the update was rolling updte. Rolling update feature is provided by deployment. In naked pod we cant update a deployment’s properties as we did above. The only was to update the property is to delete the pod & create a new pod again.
+But if you see in above slide, the old replicaset is not deleted. “Great Job”. You noticed it right. It’s because if you want to undo changes you can use rollout command. Always remember the 2 number has latest change. Hence to rollout the change to previous state we can use option 1 & it undoes the change. 
+ 
+The replicaset contains all the properties in yaml codein etcd DB. That allows you to undo nomatter when. The revision does not go automatically, hence old replicaset will not disappear automatically. 
+
+The env variable in Yaml code is set under spec->template->(spec->container->env). Hence yes, the env variables can be set in yaml code if you have used declarative way & then use kubectl apply with rolling update.
+Kubectl apply is used to update the property of deployment, if the deploy is created through declarative way that is using yaml code. 
+ 
+ 
+
+To run a command from history on line no. 66 is:-
+ 
+
+
+ 
+The label is autocreated when deployment is created through command line. To set label manually we use below command:- 
+ 	
+ 
+ 
+Now, if we see the label & selector of myginx deployment, 
+Kubectl describe deploy myginx
+ 
+In above slide we see that label is app=myginx Hence the deployment is looking for right number of pods for selector label to be available, here it is 3. 
+If I label a particular pod
+ 
+You will see that the deployment has 3/3 pods & replicaset has 3/3 . What we see is new pod is created 17 sec with lable myginx, this has happened because we have removed the label from the old pod. This proves labels are of important use internally for K8s. K8s is monitoring the availability of sufficient pods by checking out the label. If the label goes away then from K8 perspective the pod is not part of deplo anymore & that is what we see happening right here.
+Ip addresses of pods:- use -o wide
+ 
+
+Services:- Accessing application from outside. It is an api. It does load balancing. It is not HA proxy LB but APi load Balancing.
+Kubectl api-resources -h |less 
+---- It will give list of all api resources.
+ 
+
+ 
+The deployment does not have an address. Pods have an ip address.
+Blue colour is DB & black colour is fronte. Bk needs to be reachable from inside & FE from external. 
+Two types of services:-
+1.	Cluster IP:- This ip is accessed internally . Why is it useful? This is useful for microservices configuration. 
+2.	Node port is exposing high level node port on external network. HLNP(high level node port) here is 32000. It is random port randomly generated. We can manipulate it yourself as well. But what is happening if you have users in external n/w who wants to access FE appl , the packets from the request are send to service. Hence proved, the node port exposes service externally.
+Ingress is an api resource that gathers the service to provide url for eg mya.pp.nl. Ingress works together with external dns & makes sure that the url is resolved in a right way.
+Hence the flow from user to backend is:
+User->my.app.nl->dns->ingress->nodeport 32000->service->app	
+ 
+
+
+	 
+ 
+
+ 
+ 
+In above slide the deployment is exposed on port 80 through service.
+ 
+In above slide we see that service/nginxvc has ip 10.106.15.136 which is exposed on port 80 wuth servicetype ClusterIp.
+
+To see what services are doing we need below command:-
+ 
+Nginxsvc is forwarding 3 diff pods. These 3 pods are of the application. If we scaleup to add two pods, we see that the pods are added as endpoints. 
+But how about accessing the service????
+Below command is used to access service externally:-
+ 
+Does it work? No it will not because I am on my workspace & Clustretype service is not reachable from outside but from internal n/w. In my workspace I am using minikube machine. Minikibe machine is my cluster having below ip & cluster ip address is 10.106.15.136 which is reachable only through cluster node as shown in above whiteboard not from the outside & that’s the essence of services.  
+ 
+
+Now, if I do minikube.ssh , it should work as I am in minikube clutser.
+ 
+It worked 😉. Exit from minikube because now we want to see service type “Nodeport” to examine if it can be accessed externally. 
+
+To edit the service we need to pass command edit:-
+ 
+ 
+	
+Now let’s change the servicetype by adding nodeport & making it of type Nodeport because we know Nodeport service type needs nodeport.
+ 
+In above diagram we have added the line of serviceType   & edited the servicetype  .
+
+ 
+Here we see that type is Nodeport & has nodeport 3200 which is exposing the service externally. Hence now this service is access externally via <minikube ip>:<Nodeport>
+ 
+As you see nginix is accessible from outside n/w… Yeiii!!! 
+But now we need ingress resource to access url to reach to our nginx & not <minikube ip>/<or any cluster ip that we are using> due to security concerns.
+ 
+Ingress rules are like F/w rules.
+For ingress, Ingress controller is required which is bit complicated as Ingress not only lives in etcd DB but ingress is also implemented as an application as n/w lb which is runnign somehwere & providing service.
+
+
+
+Storage:-
+ 
+On top of container , read write layer is added. This read writeable layer lives until the container is alive. That is why in standalone container scenarios you only use volumes. 
+What is volume? -> volumen is pod specification that allows you to refer to any persistence storage .The purpose of volume is to create a storage that outlives the contaienr lifetime.We can do that inertanlly in a pod.But if we use internal storage then you are going to define something in your pod specification that is site specific & that doesn’t meet the criterion of decoupling . 
+
+About diagram:-
+We have pod. In pod we have container & volume. Volume is specification in pod that allows you to point to any type of storage. You can create empyt-dir or host-dir which is very basic & create directory on the host(for eg minikube,vmbox) that currently runs your container. You can also refer to nfs storage or clouyd storage or whatever.
+In continer there is mount, & this mount accesses storage that is defined in volume. But if in your pod you have icecusie storage then it makes your pod site specific which is absurd for decoupling.
+
+But,The purpose of decoupling is your pod should be portable & should be implemented else.
+ 
+
+Decoupling :-
+Hence in K8s we have some resources to meet the mission of decoupling. 
+Before that we need to understand that if we want to point to any type of external storage you do not need persistence bolume you can directly do it from your pod. But the disadavntage of doing directly from pod is like your pod is no longer portable with using site speicifc information. This should be avoided in K8s designing process.
+
+In decoupling we are going to work with persistent volume. PV is pointer that acts as an external api resource that is pointed to any external storage type. 
+So, the advantage of using external PV is it no longer in pod itself which makes this volume as part of cluster. As if you are in google, you wanna use google cloud storage so you want this to be cluster based.
+
+If you have an external p.volume resource, how you gonnause it? You gonna use it by defining another reource whch is the PVC, in PVC we will define permissions type like rw,read only ansible & we can define size. 
+What are you going to do if you have PVC? You are going ro tell pod that in it’s volume speicifcation it should use the PVC. & PVC is really a shopping list that you give to your pod & can say hey I want you to get 10gb of storage & I want it to be readwrietable . Now what is going to happen  when you create a pvc? Which normally is created together with pod, PVC is gohing to explore cluster & see if any storage is available that mateches the rciterio & if it is available your pvc will be bound to pv. Pv can be used once only. Only one pvc can be bound to one pv. So if pv is used then itcant be used by anyone anymore. So what does that mean? If you want to impelment storage the decoupled way, you need three elements you need pvc,pv & a pod, that pod needs to define PVC & nothing specific.
+
+One more thing that we need to talk briefly is Storage-Class.
+The idea of SC is if you are really in vague env & you are going to use PVs. Do you really want to use these PVs manually? That not cloud native way.
+In Cloudnative env, you use SC working together with storage provisioner & Storage provisoner is inerfacing your actual storage h/w & what is happening?
+If there’s a pvc that comes up then SC can auto provision PV , PV that matches the criterion of PVC. So you don’t have to create it manually but configure SC to handout the storage automatically. So that if new pvc is created new pv will be created & PVC will bind to that. That’s the automated procdeure.
+
+ 	 
+ 
+
+
+ 
+
+Lets see how standalone storage situation works?
+What is standalone?- without PV & wuthout PVC.
+Vim morevolumes.yaml
+ 
+Here I am using naked pod, but that’s not suggested
+ I this pod, I am using 2 containers which is again not recommended. But I am using 2 containers here as I want to use it in this demo.
+These 2 container are having a Volume mount.Volume mount is using a mount path that refers to name test that refers to the volume that is also part of pod specification this is bdw equivalent to docker volume that you normally would create independtly in docker but now we are pulling in a pod. Here volume type is emptydir, emptydir is very nice for testing something which is really not Cloud native specific. It creates an empty directory for temporary use.
+
+ 
+Emptydir is used by my centos1 & centos2 containers.
+ 
+
+  
+
+We see morvol2 container is creating. To verify this we can use describe morevol2.
+ 
+
+Here in below pic, we can see the type of volume is emptydir & we can see that it is used by centos containers having mounts with rw permission.	
+ 
+
+To see the types of volumes:-
+Kubectl explain pod.spec.volumes
+ 
+ 
+If you are working in a local env what is wrong if you don’t have the intention to use your pod in another cluster, what is wrong by addressing storage & want to use directly?->Nothing.
+
+ 
+What if I run below command?
+ 
+I want to run a command in morevol2 specifically in container centos1. 
+It is running a touch command in container & it creates a file & shares th storage. 
+Now if I do ls on centos2 container, I see hello.
+ 
+Why is that?-> is is becz centos1 & 2 are referring same storage.
+
+ Now, vi pv.yaml
+ 
+
+ 
+
+It has PV which defines capacity,accessmodes,hostpath. Hostpath is directory that ill be created on the host , here it is minikube.
+	
+To create yaml file called pv.yaml
+ 
+
+ 
+
+Vi pvc.yaml
+Here we define persistence volume claim. Here we see that there’s no capacit/storage defined. So pvc is not telling k8 which storage to use , its just telling accessmodes & requested 1gb.
+ 
+
+So, now I am going to create pvc. What is K8s going to do?->it is going to export the cluster to see if any  pv is available accessing these requests. And if the pv is available then we would get bind.
+So, 
+ 
+
+ 
+Above, we see the status of pvc as ‘bound’. But here, we see surprising that in volume I do not see pv volume , I see pvc-***** & you know why tht is? That is once export ‘kubectl get pv’ because it has suddenly created a new pv.
+ 
+Why is it so? This is because I am in minikube & in minikube we have storageclass. And storageclass has automatci storage provisioner. Now, What storage class noticed?? It noticed that there was pvc telling the cluster I need 1 gb. There was PV with 2gb. Tht means if you bind that pv we would have wasted 1gb & hence storageclass jumped in & automatically created pvc. 
+
+ 
+
+If you want to know what is behind it ? use kubectl describe pv pvc-****
+ 
+
+
+
+ 
+
+Here, we see that storageclass on the minikube host has created this  . 
+
+Now,next part is to see vim pod.yaml
+ 
+
+This is  a pod defining a volume & volume is not defining that I want emptydir or icecruisy or googlecloud or wjhatever , no it is defining pv-claim.. So the pod actually is using a claim to request 1gb read only memory. So, pod reaches out the pv-claim & by using a pv-claim it will use the storage that is provided by the pv to which the pvc is bound. That’s the level of indirectness that is what we call as decoupling &  decoupling is good in k8s env.
+
+ 
+
+
+Describe pv-pod.yaml:-
+ 
+ 
+
+There’s a volume that has pv-storage & this volume pv-storage is using claim-pv-claim & the type PersistentVolumeClaim & that’s what all the pod knows. So, the pod has no knowledge of specicif storage that is used & that makes this all portable  & that makes VR in  decoupled env.
+
+Talking abt decoupling:-
+Do you remember our mydb? Our DB crahsed because we did not have any specicif env variables.
+I recreated DB & then we have put an env vraible directly in the app.That’s not nice! Becasye  if you put your env vrible directly in your app then there is site speific information in the app & with the philosophy of decoupling in mind you don’t want it. & that is why we have configmap.
+
+How confihmap can be used as extrenl entity that allows you to store variables in a cluster?
+ 
+
+ 
+What is key1=config1? It is env variable. 
+
+ 
+Now I have a configmap which has env variavle. 
+Here, the idea is to create a configmap that makes the site requirements while leaving your app destination alone & that is decoupling. That means the appl can be delivered in a site specific way does not contain any site specific data, you can use this & tell the people who are going to use your appli & make sure that you use configmap. This configmap contains variable. 
+If use kubectl describe on configmap dbconfig, thenn we can see mysol_root_p/w . It is not encrypted.
+ 
+
+But hey lets see what configmap is dping & what it si capable of:-
+ 
+
+We know what will happen, this  mynewdb will crash as mariadb needs env variable MYSQL_ROOT_P/W.
+ 
+We see as expected, crashloopbackoff.
+
+Now, we are going to apply the configmap to the configuration.
+ 
+
+ 
+	
+ 
+Cm=configmap
+
+
+ 
+
+ 
+Now, we see that deploymen has been applied to a application. This is done by imperative way through command line interface bcz it is the easiest way to show you quick result.
+But, we can also do that using yaml code by using kubectl set env –from….* which will aded to runtime yaml code.
+
+
+ 
+Under spec.teamplate.spec-> under container->The above highlighted code is added by seting an env variable through “set env configmap”
+Hence this is how we can use configmaps to  decouple information in Cloud Native env bcz decoupling is what all about.
+
+ 
+
+ 
+ 
+
+
+ 
+
+ 	
+
+Where is Persisten volume created?
+It really depends on where u have told it to be created. Goodcloud is created on googlecloud, icecruissy is created on icescriuisy. It ireally depends on storage type.
+
+Storage of pv can be in any of location?->yes, true. There are 20 storage ypes of PV.
+
+
+How can I check memory usage of a pod? – By installing metric server & using kubectl talk & there’s alot of work. 
+
+Ingress-> it is a resource type that we are using externally from the clustr.
+
+Each Service has unique ip.
+
+Nodeport is implemented by kube proxy which is implementing firewall rules.
+
+How is volume mounted on all pods->by defining volume in deployment which is part of pod sepcification
+Depending on type of storage that we have defined in pod specification you’ll get your parameter for NFS, for aws,for …whatver?->that depends on storage type
+
+Pod lifecycle:-
+https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/
+
+ckad:-
+https://learning.oreilly.com/videos/certified-kubernetes-application/9780136677628/ 	
+
+Playlist of all videos:-
+https://learning.oreilly.com/search/?query=Sander%20van%20Vugt&extended_publisher_data=true&highlight=true&include_assessments=false&include_case_studies=true&include_courses=true&include_playlists=true&include_collections=true&include_notebooks=true&include_sandboxes=true&include_scenarios=true&is_academic_institution_account=false&source=user&sort=relevance&facet_json=true&json_facets=true&page=0&include_facets=true&include_practice_exams=true 
+
+	 
+ Openstack certification:-
+https://learning.oreilly.com/videos/openstack-certification/9780134665276/ 
+ 
+k8 cheatsheet:-
+https://github.com/dennyzhang/cheatsheet-kubernetes-A4
+
+What are types of Taints?-
+•	NoSchedule: The scheduler won't schedule pods without a matching toleration on the tainted node.
+•	PreferNoSchedule: The scheduler tries to avoid scheduling pods without a matching toleration on the tainted node, but it can still schedule them if there are no other options.
+•	NoExecute: Pods that are already running on the tainted node will be evicted if they don't have a matching toleration.
+
+Types of Status of Nodes?-
+•  Ready: The node is healthy and able to accept pods.
+•  MemoryPressure: The node has insufficient memory available.
+•  DiskPressure: The node has insufficient disk space available.
+•  PIDPressure: The node has insufficient process IDs available.
+•  NetworkUnavailable: The network for the node is not correctly configured.
+•  Unschedulable: The node is marked as unschedulable (e.g., by an administrator).
+
+Difference between cordon & drain?
+In both cases the nodes becomes unscjedulable. Howvere with Cordon the node is marked unschedulable(kubectl cordon node1) & with drain the existin pods are safely evicted to other node & then the n ode is marked unschedulable.( kubectl drain node1 --ignore-daemonsets)
+
+The --ignore-daemonsets flag ensures that daemonset-managed pods are not evicted.
+In both the cases the node is brought back to schedulable status using ‘kubectl cordon node1’ command.
+
+What is kube apiserver?
+The kube-apiserver is the heart of the Kubernetes control plane, playing a critical role in managing and maintaining the state and health of the cluster. 
+It serves as the interface for interacting with all the other components of Kubernetes, as well as external clients
+The kube-apiserver communicates with other control plane components, such as the scheduler and controller manager, as well as with worker nodes, through the Kubernetes API. It is the central hub that coordinates the entire cluster's operations and ensures everything functions smoothly.
+
+What is kube proxy?
+Kube-proxy is an essential network component in a Kubernetes cluster. It runs on each node and maintains network rules.	
+
+Main Functions of Kube-proxy
+Service Discovery:
+•	Service IPs: It assigns IP addresses to services, ensuring they can be accessed by other pods within the cluster.
+•	Endpoints: It keeps track of the available service endpoints (i.e., the IP addresses of the pods backing the service).
+
+Traffic Routing:
+•	iptables: Kube-proxy uses iptables rules to ensure that incoming traffic is directed to one of the available service endpoints.
+
+Load Balancing:
+•	Internal Load Balancing: Kube-proxy distributes traffic between the various endpoints of a service to ensure an even load across all pods.
+•	Session Affinity: It can maintain session affinity (also known as sticky sessions), ensuring that a client’s requests are consistently directed to the same pod
+In summary, kube-proxy ensures that traffic within a Kubernetes cluster is properly routed and load-balanced
+
+WHAT IS kubectl
+kubectl is the command-line tool for interacting with Kubernetes clusters. It is an essential utility for cluster management, allowing you to run commands to manage and inspect your Kubernetes resources.
+kubectl itself doesn’t run on worker nodes, it plays a crucial role in managing and interacting with the components that do.
+
+what is kubelet
+The kubelet is a fundamental component of a Kubernetes cluster. It runs on each worker node and is responsible for managing the lifecycle of the pods running on that node
+Key Benefits
+•	Autonomy: Each kubelet operates independently on its node, making real-time decisions to manage the pods.
+•	Robustness: Ensures that the desired state of the pods is maintained, and performs self-healing actions to achieve this.
+In summary, the kubelet is like the "workhorse" of Kubernetes, ensuring that the containers specified in the pod manifests are running correctly on the nodes
+
+What all runs on worker node?
+kubelet
+•	The kubelet is the primary agent that runs on each worker node. It is responsible for managing the lifecycle of pods and containers on the node. It ensures that the containers described in the pod specifications are running and healthy.
+2. kube-proxy
+•	The kube-proxy is a network component that maintains network rules and facilitates communication between services. It handles service discovery, traffic routing, and load 
+3. Container Runtime
+•	The container runtime is the software that runs and manages containers on the node. Examples include Docker, containerd, and CRI-O. The container runtime interfaces with the kubelet to create, start, stop, and delete containers.
+4. Pods and Containers
+•	Pods are the smallest deployable units in Kubernetes, and they run one or more containers. Each pod has its own IP address and storage, and it is scheduled on a worker node by the kube-scheduler.
+Optional Components:
+•	Logging and Monitoring Agents: Many clusters deploy additional agents for logging (e.g., Fluentd) and monitoring (e.g., Prometheus node exporter) to collect and forward logs and metrics.
+
+What is etcd?
+•	etcd is a distributed key-value store that is used by Kubernetes as its backing store for all cluster data.
+•	Data in etcd is replicated across multiple nodes to ensure durability and fault tolerance.
+•	etcd is the backbone of the Kubernetes control plane, providing a reliable and consistent storage layer for all cluster data
+•	Authentication and Authorization: etcd supports authentication and role-based access control (RBAC) to secure the data.
+
+What is context
+In Kubernetes, context refers to the cluster configuration details that specify which cluster, user, and namespace kubectl commands should interact with. A context is a grouping of access parameters, and it makes it easier to switch between different clusters, users, and namespaces.
+
+Components of a Context
+A context in Kubernetes is defined by the following components:
+•	Cluster: The Kubernetes cluster you want to interact with.
+•	User: The user identity to use for authentication with the cluster.
+•	Namespace: The default namespace for kubectl commands (you can still specify a different namespace for individual commands).
+
+Location of context- ~/.kube/config
+
+what is scheduler
+The Kubernetes scheduler is a critical component of the Kubernetes control plane. Its primary function is to assign pods to nodes within a cluster based on a variety of constraints and requirements.
+
+Main Functions of the Scheduler
+1.	Pod Scheduling:
+o	Binding Pods to Nodes: The scheduler selects an appropriate node for each unscheduled pod and creates a binding that associates the pod with the chosen node.
+o	Resource Awareness: It takes into account the resource requirements of the pod, such as CPU, memory, and storage, and finds a node that has enough available resources.
+2.	Constraints and Policies:
+o	Node Affinity/Anti-Affinity: It considers node affinity and anti-affinity rules, ensuring that pods are scheduled on nodes that match specific criteria or avoiding nodes that do not meet certain conditions.
+o	Pod Affinity/Anti-Affinity: It also respects pod affinity and anti-affinity rules, ensuring that certain pods are scheduled together or apart.
+o	Taints and Tolerations: The scheduler respects taints and tolerations, ensuring that pods are not scheduled on nodes with incompatible taints unless they have the appropriate tolerations.
+3.	Constraints Satisfiability:
+o	Node Selectors and Labels: It considers node selectors and labels specified in the pod spec to find a matching node.
+o	Topology Spread Constraints: Ensures that pods are spread across failure domains, such as zones or regions, to achieve high availability.
+
+What is control manager?
+the controller manager is a key component of the control plane that runs controllers. Controllers are control loops that monitor the state of the cluster and make or request changes to move the current state toward the desired state. The controller manager ensures that the cluster's desired state as specified in the API server is constantly maintained and reconciled
+
+Main Functions of the Controller Manager
+1.	Running Controllers:
+o	The controller manager runs several built-in controllers that manage different aspects of the cluster, such as node management, replication, endpoints, service accounts, and more.
+2.	Node Controller:
+o	Manages the nodes in the cluster, ensuring they are healthy and available. It also handles node addition, deletion, and health checks.
+3.	Replication Controller:
+o	Ensures that the correct number of pod replicas are running as specified in a replication controller object.
+4.	Endpoint Controller:
+o	Populates the Endpoints object (which is used in service discovery) with the IP addresses of pods that match the selector.
+5.	Service Account Controller:
+o	Creates default service accounts for namespaces and ensures that pods can authenticate with the API server.
+6.	Deployment Controller:
+o	Manages deployments, ensuring that the desired number of replicas are running, and handles rolling updates and rollbacks.
+
+Can there be two control manager in same cluster?
+In a highly available Kubernetes cluster, multiple instances of the controller manager can run simultaneously, but only one instance will act as the active leader at any given time. This is achieved through a process known as leader election.
+
